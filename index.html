@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>�������� �������</title>
+    </head>
+    <body>
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+            }
+            
+            body {
+                background: #efefef;
+            }
+            
+            .circle {
+                background: #444;
+                position: absolute;
+                width: 40px;
+                height: 40px;
+                border-radius: 100px;
+            }
+            
+            .circle-shadow {
+                background: #ddd;
+                position: absolute;
+                width: 40px;
+                height: 40px;
+                border-radius: 100px;
+            }
+
+        </style>
+        
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+        <script>
+            var bodyWidth = $('body').width(),
+                    bodyHeigth = $('body').height(),
+                    body = $('body');
+
+            for (var x = 0; x < bodyWidth; x += 60) {
+                for (var y = 0; y < bodyHeigth; y += 60) {
+                    body.append("<div class='circle-shadow' data-x = '" + x + "' data-y = '" + y + "' style = 'top: " + y + "px; left: " + x + "px'></div>");
+                    body.append("<div class='circle' data-x = '" + x + "' data-y = '" + y + "' style = 'top: " + y + "px; left: " + x + "px'></div>");
+                }
+            }
+            try {
+                var halfWidth = $('.circle:eq('+0+')').width()/2,
+                        fullWidth = halfWidth * 2,
+                        sqr = Math.sqrt,
+                        circle = $('.circle');
+
+                $(window).on('mousemove', (document) => {
+                    var docX = document.clientX,
+                        docY = document.clientY;
+                    circle.each((i) => {
+                        var x0 = $('.circle:eq(' + i + ')').data('x') + halfWidth,
+                            y0 = $('.circle:eq(' + i + ')').data('y') + halfWidth,
+                            dx = docX - x0,
+                            dy = docY - y0;
+                        if(sqr(dx * dx + dy * dy) < fullWidth) {
+                            return (() => {
+                                $('.circle:eq(' + i + ')').css({
+                                    left: x0 - dx - halfWidth + 'px',
+                                    top: y0 - dy - halfWidth + 'px'
+                                });
+                            })();
+                        } else {
+                            return (() => {
+                                $('.circle:eq(' + i + ')').css({
+                                    left: x0 - halfWidth + 'px',
+                                    top: y0 - halfWidth + 'px'
+                                });
+                            })();
+                        }
+                    });
+                });
+            }
+            catch(window) {
+                if (window){
+                    alert(window);
+                }
+            }
+        </script>
+    </body>
+</html>
